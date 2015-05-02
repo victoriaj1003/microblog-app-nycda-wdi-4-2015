@@ -6,6 +6,11 @@ set :database, "sqlite3:lastminuteplans.sqlite3"
 enable :sessions
 set :sessions => true
 
+post '/follow/:id' do
+	puts params.inspect
+end
+
+
 
 # when user types in our url, this goes to the server to get out ip address
 
@@ -23,8 +28,10 @@ end
 
 post '/signin' do
 	@user = User.find_by(email: params[:email])
-	if @user && @user.password == params[:password]
+	if @user and @user.password == params[:password]
 		session[:user_id] = @user.id
+		puts "#{params.inspect}"
+		# binding.pry
 		redirect to('/profile')
 	else
 		redirect to('/signup')
@@ -56,9 +63,26 @@ get '/profile' do
 	erb :profile
 end
 
+#when user searches from their profile page and hits search button, they are directed to their results page via this
+
+get '/results' do
+	erb :results
+end
+
+#adding a post and how it relates to the user... 
+#user writes blog post and hits submit
+
+post '/profile' do
+	@new_post=Post.create(params[:title], params[:body])
+	# puts "#{params.inspect}"
+	redirect to('/profile')
+end
 
 
-#when user fills out signup form and clicks submit, this creates the user in the users table.
+
+#when user writes a post and hits submit, the results are 
+
+
 
 
 
