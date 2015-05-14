@@ -8,6 +8,6 @@ gem "sqlite3"
 gem "rake"
 gem "rack-flash3"
 # gem 'pg'
-gem "pry"
-
+# gem "pry"
+gem "byebug"
 

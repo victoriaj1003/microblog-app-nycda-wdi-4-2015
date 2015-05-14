@@ -1,15 +1,17 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require './models'
+require 'byebug'
 
 set :database, "sqlite3:lastminuteplans.sqlite3"
-enable :sessions
-set :sessions => true
+set :sessions, true
 
 post '/follow/:id' do
 	puts params.inspect
 end
-
+def current_user
+	session[:user_id] ? User.find(session[:user_id]) : nil	
+end
 
 
 # when user types in our url, this goes to the server to get out ip address
@@ -18,7 +20,7 @@ get '/' do
 	erb :home
 end
 
-#when usser clicks the sign in link, they are directed to the signin page via this
+#when user clicks the sign in link, they are directed to the signin page via this
 
 get '/signin' do
 	erb :signin
@@ -73,16 +75,46 @@ end
 #user writes blog post and hits submit
 
 post '/profile' do
-	@new_post=Post.create(params[:title], params[:body])
+	# @new_post=Post.create(title: params[:title], body: params[:body])
+	Post.create(title: params[:title], body: params[:body])
 	# puts "#{params.inspect}"
 	redirect to('/profile')
 end
 
+# post '/profile' do
+# 	@user=User.{:title }
+# end
 
+get '/exit' do
+	erb :exit
+end
 
-#when user writes a post and hits submit, the results are 
+# post '/exit' do
+# 	@user.id = 
+# 	session[:user_id] = nil
+# 	redirect to('/exit')
+# end
 
+# post '/signin' do
+# 	@user = User.find_by(email: params[:email])
+# 	if @user and @user.password == params[:password]
+# 		session[:user_id] = @user.id
+# 		puts "#{params.inspect}"
+# 		# binding.pry
+# 		redirect to('/profile')
+# 	else
+# 		redirect to('/signup')
+# 	end
+# end
 
+# for user to delete their account...
+
+# Post '/.' do
+# 	delete '/user/:id' do
+# 		user = User.find(params[:id])
+# 		user.destroy
+# 		redirect to '/'
+# 	end
 
 
 
